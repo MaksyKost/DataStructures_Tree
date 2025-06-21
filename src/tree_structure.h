@@ -13,7 +13,7 @@ public:
     virtual void remove(int value) = 0;
     virtual bool search(int value) const = 0;
     virtual void fillRandom(int size) = 0;
-    void clear();
+    virtual void clear() = 0;
 
     // Opcjonalna metoda do wyświetlania drzewa, może być zaimplementowana w podklasach
     virtual void display() const = 0;
