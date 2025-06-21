@@ -12,6 +12,8 @@ public:
     virtual void insert(int value) = 0;
     virtual void remove(int value) = 0;
     virtual bool search(int value) const = 0;
+    virtual void fillRandom(int size) = 0;
+    void clear();
 
     // Opcjonalna metoda do wyświetlania drzewa, może być zaimplementowana w podklasach
     virtual void display() const = 0;
