@@ -86,7 +86,7 @@ void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font
     }
 }
 
-int main() {
+int run() {
     sf::RenderWindow window(sf::VideoMode({1280u, 800u}), "Tree Visualizer");
     sf::Font font;
     if (!font.openFromFile("GOTHICB.ttf")) return 1;
@@ -297,5 +297,10 @@ int main() {
 
         window.display();
     }
+    return 0;
+}
+
+int main() {
+    run();
     return 0;
 }

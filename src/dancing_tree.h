@@ -20,12 +20,15 @@ private:
 public:
     DancingTree();
     ~DancingTree();
+    DancingTreeNode* getRoot() const { return root; }
 
     virtual void insert(int key, int value) override;
     virtual void remove(int value) override;
     virtual bool search(int key, int& value) override;
     virtual void display() const override;
     virtual void displayStructure() const override;
+    virtual void clear() override;
+    virtual void fillRandom(int size) override;
 };
 
 #endif

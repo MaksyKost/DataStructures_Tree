@@ -32,13 +32,14 @@ private:
 public:
     TTree(size_t maxKeysPerNode = 3);
     ~TTree();
+    TTreeNode* getRoot() const { return root; }
 
-    void insert(int value) override;
-    void remove(int value) override;
-    bool search(int value) const override;
-    void fillRandom(int size) override;
-    void display() const override;
-    void clear() override;
+    virtual void insert(int value) override;
+    virtual void remove(int value) override;
+    virtual bool search(int value) const override;
+    virtual void fillRandom(int size) override;
+    virtual void display() const override;
+    virtual void clear() override;
 };
 
 #endif // TTREE_H

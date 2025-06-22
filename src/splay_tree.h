@@ -38,13 +38,14 @@ public:
     // konstruktor/destruktor
     SplayTree();
     ~SplayTree() override;
+    SplayTreeNode* getRoot() const { return root; }
 
     // PODSTAWOWE METODY
     virtual void insert(int key, int value) override;
     virtual bool search(int key, int& value) override; // search w Splay Tree też przesuwa znaleziony węzeł w kierunku korzenia 
     virtual void remove(int key) override;
-
-    void clear();
+    virtual void fillRandom(int size) override;
+    virtual void clear() override;
     virtual void display() const override;
     virtual void displayStructure() const override;
 };

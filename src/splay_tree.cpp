@@ -10,6 +10,11 @@ void SplayTree::clear(SplayTreeNode* node) {
     delete node;
 }
 
+void SplayTree::clear() {
+    clear(root);
+    root = nullptr;
+}
+
 // lewy obrót
 SplayTreeNode* SplayTree::rotateLeft(SplayTreeNode* node) {
     SplayTreeNode* newRoot = node->right;
@@ -90,7 +95,7 @@ SplayTree::SplayTree() : root(nullptr) {}
 
 // destruktor
 SplayTree::~SplayTree() {
-    clear(root);
+    clear();
 }
 
 void SplayTree::clear() {

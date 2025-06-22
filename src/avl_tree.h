@@ -37,7 +37,8 @@ public:
     virtual bool search(int key, int &value) override;
     virtual void display() const override;
     virtual void displayStructure() const override;
-    void clear();
+    virtual void clear() override;
+    virtual void fillRandom(int size) override;
     //void inOrder(std::vector<int>& keys) const;
     AVLNode* getRoot() const { return root; }
 };

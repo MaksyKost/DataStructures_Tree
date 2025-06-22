@@ -7,12 +7,16 @@ void DancingTree::deleteSubtree(DancingTreeNode* node) {
         deleteSubtree(node->left);
         deleteSubtree(node->right);
         delete node;
-    }
+}
+
+void DancingTree::clear() {
+    deleteSubtree(root);
+}
 
 DancingTree::DancingTree() : root(nullptr) {}
 
 DancingTree::~DancingTree() {
-    deleteSubtree(root);
+    clear();
 }
 
 // 
