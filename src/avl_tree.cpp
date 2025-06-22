@@ -52,14 +52,14 @@ AVLNode* AVLTree::balance(AVLNode* node) {
     //LL
     if (balanceFactor(node) > 1 && balanceFactor(node->left) >= 0) node = rotateRight(node);
     //LR
-    if (balanceFactor(node) > 1 && balanceFactor(node->left) < 0) {
+    else if (balanceFactor(node) > 1 && balanceFactor(node->left) < 0) {
         node->left = rotateLeft(node->left);
         node = rotateRight(node);
     }
     //RR
-    if (balanceFactor(node) < -1 && balanceFactor(node->right) <= 0) node = rotateLeft(node);
+    else if (balanceFactor(node) < -1 && balanceFactor(node->right) <= 0) node = rotateLeft(node);
     //RL
-    if (balanceFactor(node) < -1 && balanceFactor(node->right) > 0) {
+    else if (balanceFactor(node) < -1 && balanceFactor(node->right) > 0) {
         node->right = rotateRight(node->right);
         node = rotateLeft(node);
     }
@@ -91,28 +91,22 @@ void AVLTree::insert(int key, int value) {
     root = insert(root, key, value);
 }
 
-bool AVLTree::find(AVLNode* node, int key, int& value) const{
-    //
+bool AVLTree::find_helper(AVLNode* node, int key, int& value) const {
     if (node == nullptr) {
-        //std::cerr << "Node with this key was not found" << std::endl;
         return false;
     }
-    //
     if (key == node->key) {
         value = node->value;
         return true;
     }
-    //
-    else if (key < node->key) 
-        return find(node->left, key, value); 
-    //
-    else 
-        return find(node->right, key, value); 
+    else if (key < node->key)
+        return find_helper(node->left, key, value);
+    else
+        return find_helper(node->right, key, value);
 }
 
-//
-bool AVLTree::find(int key, int& value) const {
-    return find(root, key, value);
+bool AVLTree::search(int key, int& value) {
+    return find_helper(root, key, value);
 }
 
 //
@@ -171,12 +165,27 @@ AVLTree::~AVLTree() {
     clear();
 }
 
-void AVLTree::inOrder(std::vector<int>& keys) const {
-    std::function<void(AVLNode*)> traverse = [&](AVLNode* node) {
-        if (!node) return;
-        traverse(node->left);
-        keys.push_back(node->key);
-        traverse(node->right);
-    };
-    traverse(root);
+void printInOrderAVL(const AVLNode* node) {
+    if (!node) return;
+    printInOrderAVL(node->left);
+    std::cout << "(" << node->key << ":" << node->value << ") ";
+    printInOrderAVL(node->right);
+}
+
+void AVLTree::display() const {
+    printInOrderAVL(root);
+    std::cout << std::endl;
+}
+
+void printPreOrderAVL(const AVLNode* node) {
+    if (!node) return;
+    std::cout << "(" << node->key << ":" << node->value << ", H:" << node->height << ") ";
+    printPreOrderAVL(node->left);
+    printPreOrderAVL(node->right);
+}
+
+void AVLTree::displayStructure() const {
+    std::cout << "Pre-order traversal (Root, Left, Right): ";
+    printPreOrderAVL(root);
+    std::cout << std::endl;
 }

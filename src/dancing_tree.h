@@ -19,12 +19,13 @@ private:
 
 public:
     DancingTree();
-    ~DancingTree() override;
+    ~DancingTree();
 
-    void insert(int key, int value) override;
-    void remove(int value) override;
-    bool search(int key, int &value) override;
-    void display() const override;
+    virtual void insert(int key, int value) override;
+    virtual void remove(int value) override;
+    virtual bool search(int key, int& value) override;
+    virtual void display() const override;
+    virtual void displayStructure() const override;
 };
 
 #endif

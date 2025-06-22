@@ -167,3 +167,16 @@ void SplayTree::display() const {
     printInOrder(root);
     std::cout << std::endl;
 }
+
+void printPreOrderSplay(const SplayTreeNode* node) {
+    if (!node) return;
+    std::cout << "(" << node->key << ":" << node->value << ") ";
+    printPreOrderSplay(node->left);
+    printPreOrderSplay(node->right);
+}
+
+void SplayTree::displayStructure() const {
+    std::cout << "Pre-order traversal (Root, Left, Right): ";
+    printPreOrderSplay(root);
+    std::cout << std::endl;
+}

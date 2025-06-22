@@ -1,6 +1,9 @@
 #ifndef SPLAY_TREE_H
 #define SPLAY_TREE_H
 
+#include <iostream>
+#include "tree_structure.h"
+
 struct SplayTreeNode {
     int key;
     int value;
@@ -10,7 +13,7 @@ struct SplayTreeNode {
     SplayTreeNode(int k, int val) : key(k), value(val), left(nullptr), right(nullptr) {}
 };
 
-class SplayTree {
+class SplayTree : public TreeStructure{
 private:
     SplayTreeNode* root;
 
@@ -34,15 +37,16 @@ private:
 public:
     // konstruktor/destruktor
     SplayTree();
-    ~SplayTree();
+    ~SplayTree() override;
 
     // PODSTAWOWE METODY
-    void insert(int key, int value);
-    bool search(int key, int& value); // search w Splay Tree też przesuwa znaleziony węzeł w kierunku korzenia 
-    void remove(int key);
+    virtual void insert(int key, int value) override;
+    virtual bool search(int key, int& value) override; // search w Splay Tree też przesuwa znaleziony węzeł w kierunku korzenia 
+    virtual void remove(int key) override;
 
     void clear();
-    void display() const;
+    virtual void display() const override;
+    virtual void displayStructure() const override;
 };
 
 #endif

@@ -128,3 +128,16 @@ void DancingTree::display() const {
     printInOrder(root);
     std::cout << std::endl;
 }
+
+void printPreOrderDancing(const DancingTreeNode* node) {
+    if (!node) return;
+    std::cout << "(" << node->key << ":" << node->value << ") ";
+    printPreOrderDancing(node->left);
+    printPreOrderDancing(node->right);
+}
+
+void DancingTree::displayStructure() const {
+    std::cout << "Pre-order traversal (Root, Left, Right): ";
+    printPreOrderDancing(root);
+    std::cout << std::endl;
+}
