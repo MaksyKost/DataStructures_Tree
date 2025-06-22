@@ -1,8 +1,8 @@
 #pragma once
-#include "src/avl_tree.h"
-#include "src/dancing_tree.h"
-#include "src/splay_tree.h"
-#include "src/t_tree.h"
+#include "../src/avl_tree.h"
+#include "../src/dancing_tree.h"
+#include "../src/splay_tree.h"
+#include "../src/t_tree.h"
 
 class CLI {
 private:
