@@ -59,14 +59,31 @@ TTreeNode* TTree::insertRecursive(TTreeNode* node, int key, int value) {
         return node;
     }
 
+    // Если ключ уже есть в этом узле — не вставляем дубликаты
+    if (node->containsKey(key))
+        return node;
+
+    // Если есть место и ключ попадает в диапазон — вставляем в этот узел
+    if (node->keys.size() < maxKeys &&
+        (key > node->keys.front() && key < node->keys.back() || node->keys.size() == 1)) {
+        node->insertKey(key, value);
+        return node;
+    }
+
+    // Если ключ меньше минимального — идём влево
     if (key < node->keys.front()) {
         node->left = insertRecursive(node->left, key, value);
-        node->left->parent = node;
-    } else if (key > node->keys.back()) {
+        if (node->left) node->left->parent = node;
+    }
+    // Если ключ больше максимального — идём вправо
+    else if (key > node->keys.back()) {
         node->right = insertRecursive(node->right, key, value);
-        node->right->parent = node;
-    } else if (node->keys.size() < maxKeys) {
-        node->insertKey(key, value);
+        if (node->right) node->right->parent = node;
+    }
+    // Если нет места, но ключ попадает в диапазон — для простоты вставим вправо
+    else {
+        node->right = insertRecursive(node->right, key, value);
+        if (node->right) node->right->parent = node;
     }
     return node;
 }
