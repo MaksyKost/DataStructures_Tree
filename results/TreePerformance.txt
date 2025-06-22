@@ -1,0 +1,230 @@
+
+
+==== Testowanie drzew dla rozmiaru: 10000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  2.792e-07 s
+Remove:  2.254e-07 s
+Search:  4.18e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  6.564e-07 s
+Remove:  2.768e-07 s
+Search:  2.418e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  9.5e-08 s
+Remove:  5.06e-08 s
+Search:  3.36e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  7.62e-08 s
+Remove:  5.16e-08 s
+Search:  3.44e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 20000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  3.23e-07 s
+Remove:  2.388e-07 s
+Search:  4.76e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  8.802e-07 s
+Remove:  3.188e-07 s
+Search:  2.718e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.194e-07 s
+Remove:  6.54e-08 s
+Search:  3.48e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  9.58e-08 s
+Remove:  6.38e-08 s
+Search:  3.94e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 30000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  3.502e-07 s
+Remove:  2.472e-07 s
+Search:  4.3e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  7.92e-07 s
+Remove:  2.978e-07 s
+Search:  2.594e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.032e-07 s
+Remove:  5.48e-08 s
+Search:  3.18e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  9.84e-08 s
+Remove:  6.58e-08 s
+Search:  4.1e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 40000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  3.618e-07 s
+Remove:  2.532e-07 s
+Search:  4.68e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  8.326e-07 s
+Remove:  3.068e-07 s
+Search:  2.668e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.302e-07 s
+Remove:  7.32e-08 s
+Search:  3.58e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.012e-07 s
+Remove:  7.06e-08 s
+Search:  4.42e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 50000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  3.586e-07 s
+Remove:  2.394e-07 s
+Search:  4.92e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  8.618e-07 s
+Remove:  3.132e-07 s
+Search:  2.634e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.218e-07 s
+Remove:  6.76e-08 s
+Search:  3.32e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.49e-07 s
+Remove:  8.4e-08 s
+Search:  4.46e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 60000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  3.888e-07 s
+Remove:  2.6e-07 s
+Search:  5.16e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  8.968e-07 s
+Remove:  3.138e-07 s
+Search:  2.672e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.428e-07 s
+Remove:  7.68e-08 s
+Search:  3.64e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.224e-07 s
+Remove:  7.4e-08 s
+Search:  4.06e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 70000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  4.164e-07 s
+Remove:  2.692e-07 s
+Search:  4.52e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  9.22e-07 s
+Remove:  3.248e-07 s
+Search:  2.686e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.394e-07 s
+Remove:  7.66e-08 s
+Search:  3.5e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.298e-07 s
+Remove:  8.06e-08 s
+Search:  5.02e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 80000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  4.14e-07 s
+Remove:  2.712e-07 s
+Search:  5.22e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  1.003e-06 s
+Remove:  3.238e-07 s
+Search:  2.75e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.51e-07 s
+Remove:  7.44e-08 s
+Search:  3.1e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.244e-07 s
+Remove:  8.18e-08 s
+Search:  5.08e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 90000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  4.852e-07 s
+Remove:  2.778e-07 s
+Search:  5.14e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  1.0888e-06 s
+Remove:  3.406e-07 s
+Search:  2.67e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.448e-07 s
+Remove:  7.64e-08 s
+Search:  3.3e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.308e-07 s
+Remove:  8.34e-08 s
+Search:  4.92e-08 s
+
+
+==== Testowanie drzew dla rozmiaru: 100000 elementów ====
+
+*** Wyniki dla AVL Tree ***
+Insert:  4.808e-07 s
+Remove:  2.768e-07 s
+Search:  5.58e-08 s
+
+*** Wyniki dla TTree ***
+Insert:  1.068e-06 s
+Remove:  3.374e-07 s
+Search:  2.744e-07 s
+
+*** Wyniki dla Splay Tree ***
+Insert:  1.572e-07 s
+Remove:  8.86e-08 s
+Search:  3.26e-08 s
+
+*** Wyniki dla Dancing Tree ***
+Insert:  1.376e-07 s
+Remove:  8.38e-08 s
+Search:  5.08e-08 s

@@ -45,108 +45,118 @@ void CLI::fancyMenuTitle() {
     setTextColor(0x07);
 }
 
-void CLI::menuHeap(HeapPriorityQueue& heap) {
-    int choice, e, p;
+void CLI::menuAVLTree() {
+    AVLTree tree;
+    int choice, key, value;
     do {
-        std::cout << "\n|------------------------- Heap PQ MENU ------------------------|\n";
-        std::cout << "| 1. Dodanie elementu e o priorytecie p                           |\n";
-        std::cout << "| 2. Usunięcie i zwrócenie elementu o największym priorytecie     |\n";
-        std::cout << "| 3. Zwrócenie elementu o największym priorytecie                 |\n";
-        std::cout << "| 4. Zmiana priorytetu elementu e na p                            |\n";
-        std::cout << "| 5. Zwrócenie rozmiaru                                           |\n";
-        std::cout << "| 6. Wypełnianie losowymi elementami                              |\n";
-        std::cout << "| 7. Wyświetlanie kolejki                                         |\n";
-        std::cout << "| 8. Czyszczenie kolejki                                          |\n";
-        std::cout << "| 0. Wyjdź                                                        |\n";
-        std::cout << "|-----------------------------------------------------------------|\n";
-        std::cout << "Twój wybór: ";
-        std::cin >> choice;
+        std::cout << "\n[ AVL TREE MENU ]\n";
+        std::cout << "1. Wstaw (klucz, wartość)\n";
+        std::cout << "2. Usuń po kluczu\n";
+        std::cout << "3. Szukaj po kluczu\n";
+        std::cout << "4. Losowe dane\n";
+        std::cout << "5. Wyświetl dane\n";
+        std::cout << "6. Struktura drzewa\n";
+        std::cout << "7. Wyczyść drzewo\n";
+        std::cout << "0. Powrót\n";
+        std::cout << "Twój wybór: "; std::cin >> choice;
 
         switch (choice) {
-            case 1:
-                std::cout << "Podaj wartość: "; std::cin >> e;
-                std::cout << "Podaj priorytet: "; std::cin >> p;
-                heap.insert(e, p);
-                break;
-            case 2: {
-                Element max = heap.extractMax();
-                std::cout << "Usunięto: (" << max.e << ", " << max.p << ")\n";
-                break;
-            }
-            case 3: {
-                Element top = heap.peek();
-                std::cout << "Najwyższy priorytet: (" << top.e << ", " << top.p << ")\n";
-                break;
-            }
-            case 4:
-                std::cout << "Podaj wartość: "; std::cin >> e;
-                std::cout << "Podaj nowy priorytet: "; std::cin >> p;
-                heap.modifyKey(e, p);
-                break;
-            case 5:
-                std::cout << "Rozmiar: " << heap.returnSize() << "\n";
-                break;
-            case 6:
-                std::cout << "Ile losowych?: "; std::cin >> e;
-                heap.fillRandom(e);
-                break;
-            case 7:
-                heap.print();
-                break;
-            case 8:
-                heap.clear();
-                break;
+            case 1: std::cin >> key >> value; tree.insert(key, value); break;
+            case 2: std::cin >> key; tree.remove(key); break;
+            case 3: std::cin >> key;
+                if (tree.search(key, value)) std::cout << "Znaleziono: " << value << "\n";
+                else std::cout << "Nie znaleziono.\n"; break;
+            case 4: std::cin >> key; tree.fillRandom(key); break;
+            case 5: tree.display(); break;
+            case 6: tree.displayStructure(); break;
+            case 7: tree.clear(); break;
         }
     } while (choice != 0);
 }
 
-void CLI::menuDDL(PriorityQueueDLL& ddl) {
-    int choice, e, p;
+void CLI::menuSplayTree() {
+    SplayTree tree;
+    int choice, key, value;
     do {
-        std::cout << "\n|------------------ DLL PQ MENU ------------------|\n";
-        std::cout << "| 1. Dodaj (e,p)                                   |\n";
-        std::cout << "| 2. Usuń max                                      |\n";
-        std::cout << "| 3. Podejrzyj max                                 |\n";
-        std::cout << "| 4. Zmień priorytet                               |\n";
-        std::cout << "| 5. Rozmiar                                       |\n";
-        std::cout << "| 6. Losowe dane                                   |\n";
-        std::cout << "| 7. Wyświetl                                      |\n";
-        std::cout << "| 8. Wyczyść                                       |\n";
-        std::cout << "| 0. Wyjdź                                         |\n";
-        std::cout << "|--------------------------------------------------|\n";
-        std::cout << "Twój wybór: ";
-        std::cin >> choice;
+        std::cout << "\n[ SPLAY TREE MENU ]\n";
+        std::cout << "1. Wstaw (klucz, wartość)\n";
+        std::cout << "2. Usuń po kluczu\n";
+        std::cout << "3. Szukaj po kluczu\n";
+        std::cout << "4. Losowe dane\n";
+        std::cout << "5. Wyświetl dane\n";
+        std::cout << "6. Struktura drzewa\n";
+        std::cout << "7. Wyczyść drzewo\n";
+        std::cout << "0. Powrót\n";
+        std::cout << "Twój wybór: "; std::cin >> choice;
 
         switch (choice) {
-            case 1:
-                std::cout << "Podaj wartość: "; std::cin >> e;
-                std::cout << "Podaj priorytet: "; std::cin >> p;
-                ddl.insert(e, p);
-                break;
-            case 2:
-                std::cout << "Usunięto: " << ddl.extractMax() << "\n";
-                break;
-            case 3:
-                std::cout << "Najwyższy priorytet ma: " << ddl.peek() << "\n";
-                break;
-            case 4:
-                std::cout << "Wartość elementu: "; std::cin >> e;
-                std::cout << "Nowy priorytet: "; std::cin >> p;
-                ddl.modifyKey(e, p);
-                break;
-            case 5:
-                std::cout << "Rozmiar: " << ddl.returnSize() << "\n";
-                break;
-            case 6:
-                std::cout << "Ile losowych?: "; std::cin >> e;
-                ddl.fillRandom(e);
-                break;
-            case 7:
-                ddl.print();
-                break;
-            case 8:
-                ddl.clear();
-                break;
+            case 1: std::cin >> key >> value; tree.insert(key, value); break;
+            case 2: std::cin >> key; tree.remove(key); break;
+            case 3: std::cin >> key;
+                if (tree.search(key, value)) std::cout << "Znaleziono: " << value << "\n";
+                else std::cout << "Nie znaleziono.\n"; break;
+            case 4: std::cin >> key; tree.fillRandom(key); break;
+            case 5: tree.display(); break;
+            case 6: tree.displayStructure(); break;
+            case 7: tree.clear(); break;
+        }
+    } while (choice != 0);
+}
+
+void CLI::menuTTree() {
+    TTree tree;
+    int choice, key, value;
+    do {
+        std::cout << "\n[ T-TREE MENU ]\n";
+        std::cout << "1. Wstaw (klucz, wartość)\n";
+        std::cout << "2. Usuń po kluczu\n";
+        std::cout << "3. Szukaj po kluczu\n";
+        std::cout << "4. Losowe dane\n";
+        std::cout << "5. Wyświetl dane\n";
+        std::cout << "6. Struktura drzewa\n";
+        std::cout << "7. Wyczyść drzewo\n";
+        std::cout << "0. Powrót\n";
+        std::cout << "Twój wybór: "; std::cin >> choice;
+
+        switch (choice) {
+            case 1: std::cin >> key >> value; tree.insert(key, value); break;
+            case 2: std::cin >> key; tree.remove(key); break;
+            case 3: std::cin >> key;
+                if (tree.search(key, value)) std::cout << "Znaleziono: " << value << "\n";
+                else std::cout << "Nie znaleziono.\n"; break;
+            case 4: std::cin >> key; tree.fillRandom(key); break;
+            case 5: tree.display(); break;
+            case 6: tree.displayStructure(); break;
+            case 7: tree.clear(); break;
+        }
+    } while (choice != 0);
+}
+
+void CLI::menuDancingTree() {
+    DancingTree tree;
+    int choice, key, value;
+    do {
+        std::cout << "\n[ DANCING TREE MENU ]\n";
+        std::cout << "1. Wstaw (klucz, wartość)\n";
+        std::cout << "2. Usuń po kluczu\n";
+        std::cout << "3. Szukaj po kluczu\n";
+        std::cout << "4. Losowe dane\n";
+        std::cout << "5. Wyświetl dane\n";
+        std::cout << "6. Struktura drzewa\n";
+        std::cout << "7. Wyczyść drzewo\n";
+        std::cout << "0. Powrót\n";
+        std::cout << "Twój wybór: "; std::cin >> choice;
+
+        switch (choice) {
+            case 1: std::cin >> key >> value; tree.insert(key, value); break;
+            case 2: std::cin >> key; tree.remove(key); break;
+            case 3: std::cin >> key;
+                if (tree.search(key, value)) std::cout << "Znaleziono: " << value << "\n";
+                else std::cout << "Nie znaleziono.\n"; break;
+            case 4: std::cin >> key; tree.fillRandom(key); break;
+            case 5: tree.display(); break;
+            case 6: tree.displayStructure(); break;
+            case 7: tree.clear(); break;
         }
     } while (choice != 0);
 }
@@ -155,26 +165,31 @@ void CLI::run() {
     srand(seed);
     system("chcp 65001 > nul");
     int choice;
+
     do {
         fancyMenuTitle();
-        std::cout << "----------------  Wybierz opcję ---------------\n";
-        std::cout << "| 1. Kopiec                                    |\n";
-        std::cout << "| 2. Lista dwukierunkowa                       |\n";
-        std::cout << "| 0. Wyjdź                                     |\n";
+        std::cout << "----------------  Wybierz DRZEWO ---------------\n";
+        std::cout << "| 1. AVL Tree                                   |\n";
+        std::cout << "| 2. Splay Tree                                 |\n";
+        std::cout << "| 3. T-Tree                                     |\n";
+        std::cout << "| 4. Dancing Tree                               |\n";
+        std::cout << "| 0. Wyjdź                                      |\n";
         std::cout << "Twój wybór: ";
         std::cin >> choice;
 
         switch (choice) {
-            case 1: {
-                HeapPriorityQueue heapPQ;
-                menuHeap(heapPQ);
+            case 1:
+                menuAVLTree();
                 break;
-            }
-            case 2: {
-                PriorityQueueDLL ddlPQ;
-                menuDDL(ddlPQ);
+            case 2:
+                menuSplayTree();
                 break;
-            }
+            case 3:
+                menuTTree();
+                break;
+            case 4:
+                menuDancingTree();
+                break;
         }
     } while (choice != 0);
 }

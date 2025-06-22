@@ -129,15 +129,8 @@ bool TTree::searchRecursive(TTreeNode* node, int key, int& value) const {
 
 void TTree::fillRandom(int size) {
     clear();
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, size * 10);
-
-    for (int i = 0; i < size; ++i) {
-        int key = dist(gen);
-        int value = dist(gen);
-        insert(key, value);
-    }
+    for (int i = 0; i < size; ++i)
+        insert(rand() % 100, rand() % 1000);
 }
 
 void TTree::display() const {

@@ -11,8 +11,12 @@ private:
 
     void setTextColor(int color);
     void fancyMenuTitle();
-    void menuHeap(HeapPriorityQueue& heap);
-    void menuDDL(PriorityQueueDLL& ddl);
+    
+    void menuAVLTree();
+    void menuSplayTree();
+    void menuTTree();
+    void menuDancingTree();
+    
 
 public:
     void run();
