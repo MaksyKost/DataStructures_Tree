@@ -1,3 +1,8 @@
+#include "interfaces/gui.h"
+#include "interfaces/cli.h"
+#include <iostream>
+#include <string>
+
 #include "src/tree_structure.h" 
 #include "src/avl_tree.h"       
 #include "src/dancing_tree.h"   
@@ -85,7 +90,7 @@ void testTree(TreeStructure* tree, const std::string& treeName) {
     std::cout << "--- " << treeName << " Test Finished ---" << std::endl << std::endl;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     // Test AVL Tree
     AVLTree avlTree;
     testTree(&avlTree, "AVL Tree");
@@ -98,5 +103,32 @@ int main() {
     SplayTree splayTree;
     testTree(&splayTree, "Splay Tree");
 
+
+/*
+    std::string mode = "gui";
+    if (argc > 1) {
+        mode = argv[1];
+    }
+
+    if (mode == "gui") {
+        // Uruchomienie trybu graficznego
+        GUI gui;
+        if (!gui.init()) {
+            std::cerr << "Błąd inicjalizacji GUI (SDL)." << std::endl;
+            std::cin.get(); // Zatrzymaj program, aby zobaczyć komunikat
+            return 1;
+        }
+        Board board;
+        gui.run(board);
+        gui.close();
+    }
+    else if (mode == "cli") {
+        // Uruchomienie trybu konsolowego
+
+    }
+    else {
+        std::cerr << "Nieznany tryb: " << mode << ". Dostępne tryby: cli, gui." << std::endl;
+        return 1;
+    }*/
     return 0;
 }
