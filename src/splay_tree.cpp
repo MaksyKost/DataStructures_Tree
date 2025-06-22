@@ -10,11 +10,6 @@ void SplayTree::clear(SplayTreeNode* node) {
     delete node;
 }
 
-void SplayTree::clear() {
-    clear(root);
-    root = nullptr;
-}
-
 // lewy obrót
 SplayTreeNode* SplayTree::rotateLeft(SplayTreeNode* node) {
     SplayTreeNode* newRoot = node->right;
@@ -184,4 +179,10 @@ void SplayTree::displayStructure() const {
     std::cout << "Pre-order traversal (Root, Left, Right): ";
     printPreOrderSplay(root);
     std::cout << std::endl;
+}
+
+void SplayTree::fillRandom(int size) {
+    clear();
+    for (int i = 0; i < size; ++i)
+            insert(rand() % 100, rand() % 1000);
 }

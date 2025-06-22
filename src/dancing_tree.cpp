@@ -11,6 +11,7 @@ void DancingTree::deleteSubtree(DancingTreeNode* node) {
 
 void DancingTree::clear() {
     deleteSubtree(root);
+    root = nullptr;
 }
 
 DancingTree::DancingTree() : root(nullptr) {}
@@ -144,4 +145,10 @@ void DancingTree::displayStructure() const {
     std::cout << "Pre-order traversal (Root, Left, Right): ";
     printPreOrderDancing(root);
     std::cout << std::endl;
+}
+
+void DancingTree::fillRandom(int size) {
+    clear();
+    for (int i = 0; i < size; ++i)
+            insert(rand() % 100, rand() % 1000);
 }

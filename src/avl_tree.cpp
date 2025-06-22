@@ -189,3 +189,9 @@ void AVLTree::displayStructure() const {
     printPreOrderAVL(root);
     std::cout << std::endl;
 }
+
+void AVLTree::fillRandom(int size) {
+    clear();
+    for (int i = 0; i < size; ++i)
+            insert(rand() % 100, rand() % 1000);
+}
