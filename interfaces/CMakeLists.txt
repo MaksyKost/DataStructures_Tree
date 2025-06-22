@@ -12,6 +12,7 @@ add_executable(gui
     "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/src/avl_tree.cpp"
     "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.cpp"
     "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/src/dancing_tree.cpp"
+    "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp"
 )
 
 target_link_libraries(gui

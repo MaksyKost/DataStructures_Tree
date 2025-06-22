@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/dancing_tree.cpp.obj.d"
   "CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.cpp.obj"
   "CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.cpp.obj.d"
+  "CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj"
+  "CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj.d"
   "CMakeFiles/gui.dir/gui.cpp.obj"
   "CMakeFiles/gui.dir/gui.cpp.obj.d"
   "gui.exe"

@@ -200,6 +200,30 @@ C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\gui.dir\build.make CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.cpp.s
 .PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.cpp.s
 
+C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.obj: C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj
+.PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.obj
+
+# target to build an object file
+C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gui.dir\build.make CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj
+.PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj
+
+C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.i: C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.i
+.PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.i
+
+# target to preprocess a source file
+C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gui.dir\build.make CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.i
+.PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.i
+
+C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.s: C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.s
+.PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.s
+
+# target to generate assembly for a file
+C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\gui.dir\build.make CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.s
+.PHONY : C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.s
+
 gui.obj: gui.cpp.obj
 .PHONY : gui.obj
 
@@ -242,6 +266,9 @@ help:
 	@echo ... C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.obj
 	@echo ... C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.i
 	@echo ... C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/splay_tree.s
+	@echo ... C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.obj
+	@echo ... C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.i
+	@echo ... C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.s
 	@echo ... gui.obj
 	@echo ... gui.i
 	@echo ... gui.s

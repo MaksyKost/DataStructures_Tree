@@ -30,6 +30,7 @@ struct DrawNode {
     float x, y;
     int key, value;
     int leftIdx = -1, rightIdx = -1;
+    std::string label;
 };
 
 template<typename NodeT>
@@ -47,6 +48,27 @@ int assignPositions(const NodeT* node, float depth, float& x, std::vector<DrawNo
     return myIdx;
 }
 
+// Для TTreeNode
+int assignPositions(const TTreeNode* node, float depth, float& x, std::vector<DrawNode>& nodes) {
+    if (!node) return -1;
+    int myIdx = nodes.size();
+    std::string label;
+    for (size_t i = 0; i < node->keys.size(); ++i) {
+        if (i > 0) label += " ";
+        label += std::to_string(node->keys[i]) + ":" + std::to_string(node->values[i]);
+    }
+    nodes.push_back({0, 0, 0, 0, -1, -1, label});
+    int leftIdx = assignPositions(node->left, depth + 1, x, nodes);
+    nodes[myIdx].x = x * 70 + 100;
+    nodes[myIdx].y = depth * 80 + 100;
+    x += 1;
+    int rightIdx = assignPositions(node->right, depth + 1, x, nodes);
+    nodes[myIdx].leftIdx = leftIdx;
+    nodes[myIdx].rightIdx = rightIdx;
+    return myIdx;
+}
+
+// Для обычных деревьев
 template<typename NodeT>
 void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font& font, int highlightKey = -1, float highlightTimer = 0.f) {
     std::vector<DrawNode> nodes;
@@ -80,9 +102,56 @@ void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font
         sf::Vector2f rectSize(textRect.size.x + padding * 2, textRect.size.y + padding * 2);
 
         sf::RectangleShape rect(rectSize);
-        rect.setOrigin(rectSize.x / 2, rectSize.y / 2);
+        rect.setOrigin(sf::Vector2f(rectSize.x / 2, rectSize.y / 2));
         rect.setPosition(sf::Vector2f(n.x, n.y));
         if (highlightTimer > 0.f && n.key == highlightKey)
+            rect.setFillColor(sf::Color(255, 255, 100)); // желтый
+        else
+            rect.setFillColor(sf::Color(200, 220, 255));
+        rect.setOutlineColor(sf::Color::Black);
+        rect.setOutlineThickness(2.f);
+        window.draw(rect);
+
+        keyText.setPosition(sf::Vector2f(n.x - textRect.size.x / 2, n.y - textRect.size.y / 2 - 4));
+        window.draw(keyText);
+    }
+}
+
+// drawTreeCompact для TTreeNode
+void drawTreeCompact(const TTreeNode* node, sf::RenderWindow& window, const sf::Font& font, int highlightKey = -1, float highlightTimer = 0.f) {
+    std::vector<DrawNode> nodes;
+    float x = 0;
+    assignPositions(node, 0, x, nodes);
+
+    // Нарисовать линии только к детям
+    for (const auto& n : nodes) {
+        if (n.leftIdx != -1) {
+            sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+            line[0].position = sf::Vector2f(n.x, n.y);
+            line[1].position = sf::Vector2f(nodes[n.leftIdx].x, nodes[n.leftIdx].y);
+            window.draw(line);
+        }
+        if (n.rightIdx != -1) {
+            sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+            line[0].position = sf::Vector2f(n.x, n.y);
+            line[1].position = sf::Vector2f(nodes[n.rightIdx].x, nodes[n.rightIdx].y);
+            window.draw(line);
+        }
+    }
+
+    // Нарисовать прямоугольники и текст
+    for (const auto& n : nodes) {
+        sf::Text keyText(font, n.label, 20);
+        keyText.setFillColor(sf::Color::Black);
+
+        sf::FloatRect textRect = keyText.getLocalBounds();
+        float padding = 12.f;
+        sf::Vector2f rectSize(textRect.size.x + padding * 2, textRect.size.y + padding * 2);
+
+        sf::RectangleShape rect(rectSize);
+        rect.setOrigin(sf::Vector2f(rectSize.x / 2, rectSize.y / 2));
+        rect.setPosition(sf::Vector2f(n.x, n.y));
+        if (highlightTimer > 0.f && n.label.find(std::to_string(highlightKey)) != std::string::npos)
             rect.setFillColor(sf::Color(255, 255, 100)); // желтый
         else
             rect.setFillColor(sf::Color(200, 220, 255));

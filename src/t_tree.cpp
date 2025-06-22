@@ -3,13 +3,20 @@
 #include <iomanip>
 #include <algorithm>
 
-TTreeNode::TTreeNode() : left(nullptr), right(nullptr), parent(nullptr) {}
+TTree::TTree() : TTree(3) {}
+TTree::TTree(size_t maxKeysPerNode)
+    : root(nullptr), maxKeys(maxKeysPerNode) {}
 
-bool TTreeNode::insertKey(int key) {
-    if (std::find(keys.begin(), keys.end(), key) != keys.end())
+bool TTreeNode::insertKey(int key, int value) {
+    auto it = std::find(keys.begin(), keys.end(), key);
+    if (it != keys.end())
         return false;
     keys.push_back(key);
-    std::sort(keys.begin(), keys.end());
+    values.push_back(value);
+    for (size_t i = keys.size() - 1; i > 0 && keys[i] < keys[i - 1]; --i) {
+        std::swap(keys[i], keys[i - 1]);
+        std::swap(values[i], values[i - 1]);
+    }
     return true;
 }
 
@@ -20,45 +27,52 @@ bool TTreeNode::containsKey(int key) const {
 bool TTreeNode::removeKey(int key) {
     auto it = std::find(keys.begin(), keys.end(), key);
     if (it != keys.end()) {
+        size_t idx = std::distance(keys.begin(), it);
         keys.erase(it);
+        values.erase(values.begin() + idx);
         return true;
     }
     return false;
 }
 
-TTree::TTree(size_t maxKeysPerNode)
-    : root(nullptr), maxKeys(maxKeysPerNode) {}
+int TTreeNode::getValue(int key) const {
+    auto it = std::find(keys.begin(), keys.end(), key);
+    if (it != keys.end()) {
+        size_t idx = std::distance(keys.begin(), it);
+        return values[idx];
+    }
+    return 0;
+}
 
 TTree::~TTree() {
     clear();
 }
 
-void TTree::insert(int value) {
-    root = insertRecursive(root, value);
+void TTree::insert(int key, int value) {
+    root = insertRecursive(root, key, value);
 }
 
-TTreeNode* TTree::insertRecursive(TTreeNode* node, int key) {
+TTreeNode* TTree::insertRecursive(TTreeNode* node, int key, int value) {
     if (!node) {
         node = new TTreeNode();
-        node->insertKey(key);
+        node->insertKey(key, value);
         return node;
     }
 
     if (key < node->keys.front()) {
-        node->left = insertRecursive(node->left, key);
+        node->left = insertRecursive(node->left, key, value);
         node->left->parent = node;
     } else if (key > node->keys.back()) {
-        node->right = insertRecursive(node->right, key);
+        node->right = insertRecursive(node->right, key, value);
         node->right->parent = node;
     } else if (node->keys.size() < maxKeys) {
-        node->insertKey(key);
+        node->insertKey(key, value);
     }
-
     return node;
 }
 
-void TTree::remove(int value) {
-    root = removeRecursive(root, value);
+void TTree::remove(int key) {
+    root = removeRecursive(root, key);
 }
 
 TTreeNode* TTree::removeRecursive(TTreeNode* node, int key) {
@@ -78,25 +92,34 @@ TTreeNode* TTree::removeRecursive(TTreeNode* node, int key) {
     return node;
 }
 
-bool TTree::search(int value) const {
-    return containsRecursive(root, value);
+bool TTree::search(int key, int& value) {
+    return searchRecursive(root, key, value);
 }
 
-bool TTree::containsRecursive(TTreeNode* node, int key) const {
+bool TTree::searchRecursive(TTreeNode* node, int key, int& value) const {
     if (!node) return false;
-    if (node->containsKey(key)) return true;
-    return (key < node->keys.front())
-        ? containsRecursive(node->left, key)
-        : containsRecursive(node->right, key);
+    auto it = std::find(node->keys.begin(), node->keys.end(), key);
+    if (it != node->keys.end()) {
+        size_t idx = std::distance(node->keys.begin(), it);
+        value = node->values[idx];
+        return true;
+    }
+    if (key < node->keys.front())
+        return searchRecursive(node->left, key, value);
+    else
+        return searchRecursive(node->right, key, value);
 }
 
 void TTree::fillRandom(int size) {
+    clear();
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, size * 10);
 
     for (int i = 0; i < size; ++i) {
-        insert(dist(gen));
+        int key = dist(gen);
+        int value = dist(gen);
+        insert(key, value);
     }
 }
 
@@ -108,7 +131,8 @@ void TTree::displayRecursive(const TTreeNode* node, int depth) const {
     if (!node) return;
     displayRecursive(node->right, depth + 1);
     std::cout << std::setw(4 * depth) << "";
-    for (int key : node->keys) std::cout << key << " ";
+    for (size_t i = 0; i < node->keys.size(); ++i)
+        std::cout << node->keys[i] << ":" << node->values[i] << " ";
     std::cout << "\n";
     displayRecursive(node->left, depth + 1);
 }
