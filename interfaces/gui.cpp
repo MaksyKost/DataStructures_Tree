@@ -94,7 +94,6 @@ int assignPositions(const TTreeNode* node, float depth, float& x, std::vector<Dr
 }
 
 
-// --- УНИФИЦИРОВАННЫЕ ФУНКЦИИ ОТРИСОВКИ С ИСПРАВЛЕНИЯМИ ДЛЯ SFML 3.0 ---
 void drawTree(sf::RenderWindow& window, const std::vector<DrawNode>& nodes, const sf::Font& font,
               int highlightKey, float highlightTimer,
               float areaX, float areaY, float areaWidth, float areaHeight, float padding) {
@@ -163,7 +162,7 @@ void drawTree(sf::RenderWindow& window, const std::vector<DrawNode>& nodes, cons
         rect.setPosition({drawX, drawY});
 
         bool isHighlighted = highlightTimer > 0.f && highlightKey != -1 && label.find(std::to_string(highlightKey)) != std::string::npos;
-        rect.setFillColor(isHighlighted ? sf::Color(255, 255, 100) : sf::Color(200, 220, 255));
+        rect.setFillColor(isHighlighted ? sf::Color(167, 215, 182) : sf::Color(229, 245, 254));
         rect.setOutlineColor(sf::Color::Black);
         rect.setOutlineThickness(2.f);
         window.draw(rect);
@@ -244,16 +243,13 @@ int run() {
             btn.shape.setSize({200, 50});
             float btnX = rightPanelX + (rightPanelWidth - btn.shape.getSize().x) / 2;
             float btnY = 80.f + i * 70.f;
-            // ИСПРАВЛЕНИЕ: setPosition принимает sf::Vector2f
             btn.shape.setPosition({btnX, btnY});
-            btn.shape.setFillColor(sf::Color(200, 220, 255));
+            btn.shape.setFillColor(sf::Color(229, 245, 254)); 
             btn.shape.setOutlineColor(sf::Color::Black);
             btn.shape.setOutlineThickness(2.f);
             
             sf::FloatRect textBounds = btn.text.getLocalBounds();
-            // ИСПРАВЛЕНИЕ: setOrigin и getLocalBounds
             btn.text.setOrigin({textBounds.position.x + textBounds.size.x / 2.f, textBounds.position.y + textBounds.size.y / 2.f});
-            // ИСПРАВЛЕНИЕ: setPosition
             btn.text.setPosition({btnX + btn.shape.getSize().x / 2.f, btnY + btn.shape.getSize().y / 2.f});
             btn.text.setFillColor(sf::Color::Black);
             
@@ -369,14 +365,14 @@ int run() {
         float winHeight = window.getSize().y;
         float leftWidth = winWidth * 0.7f;
         
-        window.clear(sf::Color(7, 107, 148));
+        window.clear(sf::Color(56, 47, 71));
 
         if (currentScreen == Screen::MainMenu) {
             sf::Text title(font, "Tree Visualizer", 60);
             sf::FloatRect titleBounds = title.getLocalBounds();
             title.setOrigin({titleBounds.position.x + titleBounds.size.x / 2.f, titleBounds.position.y});
             title.setPosition({winWidth / 2.f, 100.f});
-            title.setFillColor(sf::Color::White);
+            title.setFillColor(sf::Color(183, 173, 200));
             window.draw(title);
             
             for (size_t i = 0; i < treeTypes.size(); ++i) {
@@ -384,17 +380,17 @@ int run() {
                 sf::FloatRect textBounds = text.getLocalBounds();
                 text.setOrigin({textBounds.position.x + textBounds.size.x / 2.f, textBounds.position.y});
                 text.setPosition({winWidth / 2.f, 250.f + i * 70.f});
-                text.setFillColor(i == mainMenuSelected ? sf::Color::Yellow : sf::Color(224, 247, 198));
+                text.setFillColor(i == mainMenuSelected ? sf::Color(167, 215, 182) : sf::Color(215, 166, 200));
                 window.draw(text);
             }
         } else if (currentScreen == Screen::TreeScreen || currentScreen == Screen::InputKey) {
             sf::RectangleShape leftBg({leftWidth, winHeight});
-            leftBg.setFillColor(sf::Color(5, 80, 110));
+            leftBg.setFillColor(sf::Color(183, 173, 200));
             window.draw(leftBg);
 
             sf::RectangleShape rightBg({winWidth - leftWidth, winHeight});
             rightBg.setPosition({leftWidth, 0.f});
-            rightBg.setFillColor(sf::Color(7, 107, 148));
+            rightBg.setFillColor(sf::Color(56, 47, 71));
             window.draw(rightBg);
 
             for (auto& btn : opButtons) {
@@ -420,7 +416,7 @@ int run() {
 
         if (currentScreen == Screen::InputKey) {
             sf::RectangleShape overlay({winWidth, winHeight});
-            overlay.setFillColor({0, 0, 0, 150});
+            overlay.setFillColor(sf::Color(188, 187, 190));
             window.draw(overlay);
 
             float inputBgWidth = 600, inputBgHeight = 200;
@@ -433,13 +429,13 @@ int run() {
             window.draw(inputBg);
 
             sf::Text prompt(font, message, 28);
-            prompt.setFillColor(sf::Color::Black);
+            prompt.setFillColor(sf::Color(22, 45, 83));
             prompt.setPosition({inputBg.getPosition().x - inputBgWidth / 2 + 20, inputBg.getPosition().y - inputBgHeight / 2 + 20});
             window.draw(prompt);
 
             std::string fullInput = inputKey + (enteringValue ? " " : "") + inputValue;
             sf::Text inputText(font, fullInput + "_", 28);
-            inputText.setFillColor(sf::Color::Blue);
+            inputText.setFillColor(sf::Color(22, 45, 83));
             inputText.setPosition({inputBg.getPosition().x - inputBgWidth / 2 + 20, inputBg.getPosition().y - inputBgHeight / 2 + 80});
             window.draw(inputText);
         }
