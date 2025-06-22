@@ -7,6 +7,7 @@
 #include "../src/avl_tree.h"
 #include "../src/splay_tree.h"
 #include "../src/dancing_tree.h"
+#include "../src/t_tree.h"
 #include "../src/tree_structure.h"
 
 enum class Screen {
@@ -28,60 +29,68 @@ struct Button {
 struct DrawNode {
     float x, y;
     int key, value;
-    DrawNode* left = nullptr;
-    DrawNode* right = nullptr;
+    int leftIdx = -1, rightIdx = -1;
 };
 
 template<typename NodeT>
-void assignPositions(const NodeT* node, float depth, float& x, std::vector<DrawNode>& nodes) {
-    if (!node) return;
-    assignPositions(node->left, depth + 1, x, nodes);
-    nodes.push_back({x * 50 + 100, depth * 80 + 100, node->key, node->value});
+int assignPositions(const NodeT* node, float depth, float& x, std::vector<DrawNode>& nodes) {
+    if (!node) return -1;
+    int myIdx = nodes.size();
+    nodes.push_back({0, 0, node->key, node->value, -1, -1});
+    int leftIdx = assignPositions(node->left, depth + 1, x, nodes);
+    nodes[myIdx].x = x * 70 + 100;
+    nodes[myIdx].y = depth * 80 + 100;
     x += 1;
-    assignPositions(node->right, depth + 1, x, nodes);
+    int rightIdx = assignPositions(node->right, depth + 1, x, nodes);
+    nodes[myIdx].leftIdx = leftIdx;
+    nodes[myIdx].rightIdx = rightIdx;
+    return myIdx;
 }
 
 template<typename NodeT>
-void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font& font) {
+void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font& font, int highlightKey = -1, float highlightTimer = 0.f) {
     std::vector<DrawNode> nodes;
     float x = 0;
     assignPositions(node, 0, x, nodes);
 
-    // Нарисовать линии между родителем и детьми
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        const DrawNode& n = nodes[i];
-        // Найти детей (по координатам)
-        for (size_t j = 0; j < nodes.size(); ++j) {
-            if (nodes[j].y == n.y + 80) {
-                if (nodes[j].x < n.x) {
-                    // левый потомок
-                    sf::VertexArray line(sf::PrimitiveType::Lines, 2);
-                    line[0].position = sf::Vector2f(n.x, n.y);
-                    line[1].position = sf::Vector2f(nodes[j].x, nodes[j].y);
-                    window.draw(line);
-                } else if (nodes[j].x > n.x) {
-                    // правый потомок
-                    sf::VertexArray line(sf::PrimitiveType::Lines, 2);
-                    line[0].position = sf::Vector2f(n.x, n.y);
-                    line[1].position = sf::Vector2f(nodes[j].x, nodes[j].y);
-                    window.draw(line);
-                }
-            }
+    // Нарисовать линии только к детям
+    for (const auto& n : nodes) {
+        if (n.leftIdx != -1) {
+            sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+            line[0].position = sf::Vector2f(n.x, n.y);
+            line[1].position = sf::Vector2f(nodes[n.leftIdx].x, nodes[n.leftIdx].y);
+            window.draw(line);
+        }
+        if (n.rightIdx != -1) {
+            sf::VertexArray line(sf::PrimitiveType::Lines, 2);
+            line[0].position = sf::Vector2f(n.x, n.y);
+            line[1].position = sf::Vector2f(nodes[n.rightIdx].x, nodes[n.rightIdx].y);
+            window.draw(line);
         }
     }
 
-    // Нарисовать узлы
+    // Нарисовать прямоугольники и текст (см. выше)
     for (const auto& n : nodes) {
-        sf::CircleShape circle(24);
-        circle.setOrigin(sf::Vector2f(24.f, 24.f));
-        circle.setPosition(sf::Vector2f(n.x, n.y));
-        circle.setFillColor(sf::Color(200, 220, 255));
-        circle.setOutlineColor(sf::Color::Black);
-        circle.setOutlineThickness(2.f);
-        window.draw(circle);
-        sf::Text keyText(font, std::to_string(n.key) + ":" + std::to_string(n.value), 20);
+        std::string label = std::to_string(n.key) + ":" + std::to_string(n.value);
+        sf::Text keyText(font, label, 20);
         keyText.setFillColor(sf::Color::Black);
-        keyText.setPosition(sf::Vector2f(n.x - 18.f, n.y - 16.f));
+
+        sf::FloatRect textRect = keyText.getLocalBounds();
+        float padding = 12.f;
+        sf::Vector2f rectSize(textRect.size.x + padding * 2, textRect.size.y + padding * 2);
+
+        sf::RectangleShape rect(rectSize);
+        rect.setOrigin(rectSize.x / 2, rectSize.y / 2);
+        rect.setPosition(sf::Vector2f(n.x, n.y));
+        if (highlightTimer > 0.f && n.key == highlightKey)
+            rect.setFillColor(sf::Color(255, 255, 100)); // желтый
+        else
+            rect.setFillColor(sf::Color(200, 220, 255));
+        rect.setOutlineColor(sf::Color::Black);
+        rect.setOutlineThickness(2.f);
+        window.draw(rect);
+
+        keyText.setPosition(sf::Vector2f(n.x - textRect.size.x / 2, n.y - textRect.size.y / 2 - 4));
         window.draw(keyText);
     }
 }
@@ -97,7 +106,10 @@ int run() {
     std::string inputKey, inputValue, message;
     float messageTimer = 0.f;
 
-    std::vector<std::string> treeTypes = {"AVL Tree", "Splay Tree", "Dancing Tree"};
+    int highlightKey = -1;
+    float highlightTimer = 0.f;
+
+    std::vector<std::string> treeTypes = {"AVL Tree", "Splay Tree", "Dancing Tree", "T-Tree"};
     int mainMenuSelected = 0;
 
     std::vector<Button> opButtons;
@@ -106,6 +118,7 @@ int run() {
         if (type == "AVL Tree") currentTree = std::make_unique<AVLTree>();
         else if (type == "Splay Tree") currentTree = std::make_unique<SplayTree>();
         else if (type == "Dancing Tree") currentTree = std::make_unique<DancingTree>();
+        else if (type == "T-Tree") currentTree = std::make_unique<TTree>();
         selectedTreeType = type;
         currentScreen = Screen::TreeScreen;
         message.clear();
@@ -130,7 +143,7 @@ int run() {
             } else if (ops[i] == "Search") {
                 btn.onClick = [&]() { currentScreen = Screen::InputKey; inputKey.clear(); inputValue.clear(); message = "Enter key to search"; };
             } else if (ops[i] == "Fill Random") {
-                btn.onClick = [&]() { for (int i = 0; i < 20; ++i) currentTree->insert(rand()%1000, rand()%1000); message = "Filled with random values"; messageTimer = 2.f; };
+                btn.onClick = [&]() { for (int i = 0; i < 20; ++i) currentTree->fillRandom(10); message = "Filled with random values"; messageTimer = 2.f; };
             } else if (ops[i] == "Clear") {
                 btn.onClick = [&]() { currentTree->display(); currentTree.reset(); setupTree(selectedTreeType); message = "Tree cleared"; messageTimer = 2.f; };
             } else if (ops[i] == "Back") {
@@ -144,6 +157,7 @@ int run() {
 
     sf::Clock clock;
     bool inputForInsert = false;
+    bool enteringValue = false;
 
     while (window.isOpen()) {
         float dt = clock.restart().asSeconds();
@@ -171,19 +185,18 @@ int run() {
             } else if (currentScreen == Screen::InputKey) {
                 if (auto* text = event->getIf<sf::Event::TextEntered>()) {
                     if (message.find("value") != std::string::npos) {
-                        // Insert: сначала вводим ключ, потом значение через пробел
                         if (std::isdigit(text->unicode)) {
-                            if (inputValue.empty())
+                            if (!enteringValue)
                                 inputKey += static_cast<char>(text->unicode);
                             else
                                 inputValue += static_cast<char>(text->unicode);
                         }
-                        if (text->unicode == ' ' && !inputKey.empty() && inputValue.empty()) {
-                            inputValue = ""; // начать ввод значения
+                        if (text->unicode == 32 && !inputKey.empty() && !enteringValue) { // 32 — это пробел
+                            enteringValue = true;
                         }
                         if (text->unicode == '\b') {
-                            if (!inputValue.empty()) inputValue.pop_back();
-                            else if (!inputKey.empty()) inputKey.pop_back();
+                            if (enteringValue && !inputValue.empty()) inputValue.pop_back();
+                            else if (!enteringValue && !inputKey.empty()) inputKey.pop_back();
                         }
                         if (text->unicode == '\r') {
                             if (!inputKey.empty() && !inputValue.empty()) {
@@ -194,6 +207,7 @@ int run() {
                                 message = "Enter key and value";
                             }
                             currentScreen = Screen::TreeScreen;
+                            enteringValue = false;
                         }
                     } else {
                         // Remove/Search: только ключ
@@ -206,10 +220,14 @@ int run() {
                                     message = "Removed: " + inputKey;
                                 } else if (message.find("search") != std::string::npos) {
                                     int val = 0;
-                                    if (currentTree->search(std::stoi(inputKey), val))
+                                    if (currentTree->search(std::stoi(inputKey), val)) {
                                         message = "Found: " + inputKey + ":" + std::to_string(val);
-                                    else
+                                        highlightKey = std::stoi(inputKey);
+                                        highlightTimer = 2.f; // подсвечивать 2 секунды
+                                    } else {
                                         message = "Not found: " + inputKey;
+                                        highlightKey = -1;
+                                    }
                                 }
                                 messageTimer = 2.f;
                             }
@@ -248,13 +266,16 @@ int run() {
             // Визуализация дерева (компактная для всех типов)
             if (selectedTreeType == "AVL Tree") {
                 auto* avl = dynamic_cast<AVLTree*>(currentTree.get());
-                if (avl && avl->getRoot()) drawTreeCompact(avl->getRoot(), window, font);
+                if (avl && avl->getRoot()) drawTreeCompact(avl->getRoot(), window, font, highlightKey, highlightTimer);
             } else if (selectedTreeType == "Splay Tree") {
                 auto* splay = dynamic_cast<SplayTree*>(currentTree.get());
-                if (splay && splay->getRoot()) drawTreeCompact(splay->getRoot(), window, font);
+                if (splay && splay->getRoot()) drawTreeCompact(splay->getRoot(), window, font, highlightKey, highlightTimer);
             } else if (selectedTreeType == "Dancing Tree") {
                 auto* dancing = dynamic_cast<DancingTree*>(currentTree.get());
-                if (dancing && dancing->getRoot()) drawTreeCompact(dancing->getRoot(), window, font);
+                if (dancing && dancing->getRoot()) drawTreeCompact(dancing->getRoot(), window, font, highlightKey, highlightTimer);
+            } else if (selectedTreeType == "T-Tree") {
+                auto* ttree = dynamic_cast<TTree*>(currentTree.get());
+                if (ttree && ttree->getRoot()) drawTreeCompact(ttree->getRoot(), window, font, highlightKey, highlightTimer);
             }
         } else if (currentScreen == Screen::InputKey) {
             sf::RectangleShape inputBg(sf::Vector2f(600, 200));
@@ -293,6 +314,11 @@ int run() {
             window.draw(notifText);
             messageTimer -= dt;
             if (messageTimer < 0.f) messageTimer = 0.f;
+        }
+
+        if (highlightTimer > 0.f) {
+            highlightTimer -= dt;
+            if (highlightTimer < 0.f) highlightTimer = 0.f;
         }
 
         window.display();
