@@ -8,11 +8,13 @@ public:
     // destruktor
     virtual ~TreeStructure() {}
 
-    // PODSTAWOWE METODY
+        // PODSTAWOWE METODY
     virtual void insert(int key, int value) = 0;
     virtual void remove(int key) = 0;
     virtual bool search(int key, int& value) = 0;
-
+    virtual void fillRandom(int size) = 0;
+    virtual void clear() = 0;
+    
     // METODY POMOCNICZE
     // wyświetlanie drzewa
     virtual void display() const = 0;
