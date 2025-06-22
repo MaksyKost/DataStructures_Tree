@@ -5,18 +5,20 @@
 
 class TreeStructure {
 public:
-    // Wirtualny destruktor zapewniający poprawne zarządzanie pamięcią
+    // destruktor
     virtual ~TreeStructure() {}
 
-    // Wirtualne metody, które muszą zostać zaimplementowane w klasach pochodnych
-    virtual void insert(int value) = 0;
-    virtual void remove(int value) = 0;
-    virtual bool search(int value) const = 0;
+        // PODSTAWOWE METODY
+    virtual void insert(int key, int value) = 0;
+    virtual void remove(int key) = 0;
+    virtual bool search(int key, int& value) = 0;
     virtual void fillRandom(int size) = 0;
     virtual void clear() = 0;
-
-    // Opcjonalna metoda do wyświetlania drzewa, może być zaimplementowana w podklasach
+    
+    // METODY POMOCNICZE
+    // wyświetlanie drzewa
     virtual void display() const = 0;
+    virtual void displayStructure() const = 0;
 };
 
-#endif // TREE_STRUCTURE_H
+#endif

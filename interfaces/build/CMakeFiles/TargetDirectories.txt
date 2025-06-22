@@ -1,0 +1,3 @@
+C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/interfaces/build/CMakeFiles/gui.dir
+C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/interfaces/build/CMakeFiles/edit_cache.dir
+C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/interfaces/build/CMakeFiles/rebuild_cache.dir

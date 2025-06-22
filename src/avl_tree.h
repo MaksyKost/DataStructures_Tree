@@ -13,7 +13,7 @@ struct AVLNode {
     AVLNode(int a = 0, int b = 0, int h = 1) : key(a), value(b), height(h), left(nullptr), right(nullptr) {};
 };
 
-class AVLTree : TreeStructure{
+class AVLTree : public TreeStructure{
 private:
     AVLNode* root;
     void clear(AVLNode* node);
@@ -27,15 +27,18 @@ private:
     AVLNode* rotateRight(AVLNode* x);
     AVLNode* minValueNode(AVLNode* node);
     AVLNode* balance(AVLNode* node);
+    bool find_helper(AVLNode* node, int key, int& value) const;
 
 public:
     AVLTree();
     ~AVLTree();
-    void insert(int key, int value);
-    void remove(int key);
-    bool find(int key, int &value) const;
+    virtual void insert(int key, int value) override;
+    virtual void remove(int key) override;
+    virtual bool search(int key, int &value) override;
+    virtual void display() const override;
+    virtual void displayStructure() const override;
     void clear();
-    void inOrder(std::vector<int>& keys) const;
+    //void inOrder(std::vector<int>& keys) const;
     AVLNode* getRoot() const { return root; }
 };
 
