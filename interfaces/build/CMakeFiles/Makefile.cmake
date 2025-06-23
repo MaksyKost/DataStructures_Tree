@@ -7,17 +7,6 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLConfig.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLConfigVersion.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLGraphicsSharedTargets-debug.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLGraphicsSharedTargets-release.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLGraphicsSharedTargets.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLSystemSharedTargets-debug.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLSystemSharedTargets-release.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLSystemSharedTargets.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLWindowSharedTargets-debug.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLWindowSharedTargets-release.cmake"
-  "C:/Libraries/SFML-3.0.0/lib/cmake/SFML/SFMLWindowSharedTargets.cmake"
   "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake"
   "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCXXInformation.cmake"
   "C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake"
@@ -54,6 +43,17 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/4.0.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/4.0.0/CMakeRCCompiler.cmake"
   "CMakeFiles/4.0.0/CMakeSystem.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLConfig.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLConfigVersion.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLGraphicsSharedTargets-debug.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLGraphicsSharedTargets-release.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLGraphicsSharedTargets.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLSystemSharedTargets-debug.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLSystemSharedTargets-release.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLSystemSharedTargets.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLWindowSharedTargets-debug.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLWindowSharedTargets-release.cmake"
+  "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML/SFMLWindowSharedTargets.cmake"
   )
 
 # The corresponding makefile is:

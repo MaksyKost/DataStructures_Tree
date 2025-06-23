@@ -163,9 +163,9 @@ gui.exe: CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/s
 gui.exe: CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/dancing_tree.cpp.obj
 gui.exe: CMakeFiles/gui.dir/C_/Visual_Studio/SD_proj_bonus/DataStructures_Tree/src/t_tree.cpp.obj
 gui.exe: CMakeFiles/gui.dir/build.make
-gui.exe: C:/Libraries/SFML-3.0.0/lib/libsfml-graphics-d.a
-gui.exe: C:/Libraries/SFML-3.0.0/lib/libsfml-window-d.a
-gui.exe: C:/Libraries/SFML-3.0.0/lib/libsfml-system-d.a
+gui.exe: C:/Visual\ Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/libsfml-graphics-d.a
+gui.exe: C:/Visual\ Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/libsfml-window-d.a
+gui.exe: C:/Visual\ Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/libsfml-system-d.a
 gui.exe: CMakeFiles/gui.dir/linkLibs.rsp
 gui.exe: CMakeFiles/gui.dir/objects1.rsp
 gui.exe: CMakeFiles/gui.dir/link.txt

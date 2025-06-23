@@ -3,7 +3,7 @@ project(TreeVisualizer)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SFML_DIR "C:/Libraries/SFML-3.0.0/lib/cmake/SFML")
+set(SFML_DIR "C:/Visual Studio/SD_proj_bonus/DataStructures_Tree/lib/SFML-3.0.0/lib/cmake/SFML")
 
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
 

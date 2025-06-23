@@ -11,12 +11,14 @@
 #include "../src/t_tree.h"
 #include "../src/tree_structure.h"
 
+// Enum for different screens in the app
 enum class Screen {
     MainMenu,
     TreeScreen,
     InputKey
 };
 
+// Button structure for UI
 struct Button {
     sf::RectangleShape shape;
     sf::Text text;
@@ -26,60 +28,23 @@ struct Button {
         : text(font, str, size) {}
 };
 
-// Структура для узла, который будет нарисован
+// Structure for drawing tree nodes
 struct DrawNode {
     float x, y;
     int key, value;
     int leftIdx = -1, rightIdx = -1;
-    std::string label; // Используется для T-Tree
+    std::string label;
 };
 
-// --- ПОЛНОСТЬЮ ИСПРАВЛЕННЫЕ ФУНКЦИИ assignPositions ---
-
-// Правильная версия для стандартных деревьев
+// Recursively assign positions to nodes for drawing (generic version)
 template<typename NodeT>
 int assignPositions(const NodeT* node, float depth, float& x, std::vector<DrawNode>& nodes) {
     if (!node) return -1;
 
-    // 1. Рекурсивно обрабатываем левое поддерево
     int leftIdx = assignPositions(node->left, depth + 1, x, nodes);
 
-    // 2. Добавляем ТЕКУЩИЙ узел и получаем его индекс
     int myIdx = nodes.size();
     nodes.push_back({0, 0, node->key, node->value, -1, -1});
-    
-    // 3. Вычисляем его позицию по X после всех левых узлов
-    nodes[myIdx].x = x * 70 + 100;
-    nodes[myIdx].y = depth * 80 + 100;
-    x += 1; // Сдвигаем X для следующих (правых) узлов
-
-    // 4. Рекурсивно обрабатываем правое поддерево
-    int rightIdx = assignPositions(node->right, depth + 1, x, nodes);
-
-    // 5. Записываем правильные индексы детей
-    nodes[myIdx].leftIdx = leftIdx;
-    nodes[myIdx].rightIdx = rightIdx;
-
-    // 6. Возвращаем свой индекс родителю
-    return myIdx;
-}
-
-// Правильная перегрузка для T-Tree
-int assignPositions(const TTreeNode* node, float depth, float& x, std::vector<DrawNode>& nodes) {
-    if (!node) return -1;
-
-    // Собираем метку для узла
-    std::string label;
-    for (size_t i = 0; i < node->keys.size(); ++i) {
-        if (i > 0) label += " ";
-        label += std::to_string(node->keys[i]) + ":" + std::to_string(node->values[i]);
-    }
-
-    // Та же самая правильная логика обхода
-    int leftIdx = assignPositions(node->left, depth + 1, x, nodes);
-
-    int myIdx = nodes.size();
-    nodes.push_back({0, 0, 0, 0, -1, -1, label}); // Добавляем узел с готовой меткой
     
     nodes[myIdx].x = x * 70 + 100;
     nodes[myIdx].y = depth * 80 + 100;
@@ -93,12 +58,40 @@ int assignPositions(const TTreeNode* node, float depth, float& x, std::vector<Dr
     return myIdx;
 }
 
+// Assign positions for T-Tree nodes (handles multiple keys per node)
+int assignPositions(const TTreeNode* node, float depth, float& x, std::vector<DrawNode>& nodes) {
+    if (!node) return -1;
 
+    std::string label;
+    for (size_t i = 0; i < node->keys.size(); ++i) {
+        if (i > 0) label += " ";
+        label += std::to_string(node->keys[i]) + ":" + std::to_string(node->values[i]);
+    }
+
+    int leftIdx = assignPositions(node->left, depth + 1, x, nodes);
+
+    int myIdx = nodes.size();
+    nodes.push_back({0, 0, 0, 0, -1, -1, label});
+    
+    nodes[myIdx].x = x * 70 + 100;
+    nodes[myIdx].y = depth * 80 + 100;
+    x += 1;
+
+    int rightIdx = assignPositions(node->right, depth + 1, x, nodes);
+
+    nodes[myIdx].leftIdx = leftIdx;
+    nodes[myIdx].rightIdx = rightIdx;
+
+    return myIdx;
+}
+
+// Draws the tree using the calculated node positions
 void drawTree(sf::RenderWindow& window, const std::vector<DrawNode>& nodes, const sf::Font& font,
               int highlightKey, float highlightTimer,
               float areaX, float areaY, float areaWidth, float areaHeight, float padding) {
     if (nodes.empty()) return;
 
+    // Calculate bounds for scaling and centering
     float minX = std::numeric_limits<float>::max();
     float maxX = std::numeric_limits<float>::lowest();
     float minY = std::numeric_limits<float>::max();
@@ -118,6 +111,7 @@ void drawTree(sf::RenderWindow& window, const std::vector<DrawNode>& nodes, cons
     float offsetX = areaX + padding - minX * scale + (areaWidth - 2 * padding - (treeWidth * scale)) / 2;
     float offsetY = areaY + padding - minY * scale + (areaHeight - 2 * padding - (treeHeight * scale)) / 2;
 
+    // Draw edges between nodes
     for (const auto& n : nodes) {
         float drawX1 = n.x * scale + offsetX;
         float drawY1 = n.y * scale + offsetY;
@@ -141,40 +135,36 @@ void drawTree(sf::RenderWindow& window, const std::vector<DrawNode>& nodes, cons
         }
     }
 
+    // Draw nodes (rectangles with text)
     for (const auto& n : nodes) {
         std::string label = n.label.empty() ? (std::to_string(n.key) + ":" + std::to_string(n.value)) : n.label;
-        
-        // ИСПРАВЛЕНИЕ: Конструктор sf::Text
         sf::Text keyText(font, label, 20);
         keyText.setFillColor(sf::Color::Black);
 
-        // ИСПРАВЛЕНИЕ: getLocalBounds().size.x/y вместо width/height
         sf::FloatRect textRect = keyText.getLocalBounds();
         float nodePadding = 12.f;
         sf::Vector2f rectSize(textRect.size.x + nodePadding * 2, textRect.size.y + nodePadding * 2);
 
         sf::RectangleShape rect(rectSize);
-        // ИСПРАВЛЕНИЕ: setOrigin принимает sf::Vector2f
         rect.setOrigin({rectSize.x / 2, rectSize.y / 2});
         float drawX = n.x * scale + offsetX;
         float drawY = n.y * scale + offsetY;
-        // ИСПРАВЛЕНИЕ: setPosition принимает sf::Vector2f
         rect.setPosition({drawX, drawY});
 
+        // Highlight node if needed
         bool isHighlighted = highlightTimer > 0.f && highlightKey != -1 && label.find(std::to_string(highlightKey)) != std::string::npos;
         rect.setFillColor(isHighlighted ? sf::Color(167, 215, 182) : sf::Color(229, 245, 254));
         rect.setOutlineColor(sf::Color::Black);
         rect.setOutlineThickness(2.f);
         window.draw(rect);
 
-        // ИСПРАВЛЕНИЕ: setOrigin принимает sf::Vector2f, getLocalBounds().position.x/y вместо left/top
         keyText.setOrigin({textRect.position.x + textRect.size.x / 2.f, textRect.position.y + textRect.size.y / 2.f});
-        // ИСПРАВЛЕНИЕ: setPosition принимает sf::Vector2f
         keyText.setPosition({drawX, drawY});
         window.draw(keyText);
     }
 }
 
+// Helper to draw tree for any node type
 template<typename NodeT>
 void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font& font,
                      int highlightKey, float highlightTimer,
@@ -186,6 +176,7 @@ void drawTreeCompact(const NodeT* node, sf::RenderWindow& window, const sf::Font
     drawTree(window, nodes, font, highlightKey, highlightTimer, areaX, areaY, areaWidth, areaHeight, padding);
 }
 
+// Overload for T-Tree nodes
 void drawTreeCompact(const TTreeNode* node, sf::RenderWindow& window, const sf::Font& font,
                      int highlightKey, float highlightTimer,
                      float areaX, float areaY, float areaWidth, float areaHeight, float padding) {
@@ -196,14 +187,12 @@ void drawTreeCompact(const TTreeNode* node, sf::RenderWindow& window, const sf::
     drawTree(window, nodes, font, highlightKey, highlightTimer, areaX, areaY, areaWidth, areaHeight, padding);
 }
 
-
+// Main application loop
 int run() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    // ИСПРАВЛЕНИЕ: sf::State::Fullscreen
     sf::RenderWindow window(desktop, "Tree Visualizer", sf::State::Fullscreen);
     window.setFramerateLimit(60);
     sf::Font font;
-    // ИСПРАВЛЕНИЕ: openFromFile
     if (!font.openFromFile("GOTHICB.ttf")) return 1;
 
     Screen currentScreen = Screen::MainMenu;
@@ -220,6 +209,7 @@ int run() {
 
     std::vector<Button> opButtons;
 
+    // Setup tree based on selected type
     auto setupTree = [&](const std::string& type) {
         if (type == "AVL Tree") currentTree = std::make_unique<AVLTree>();
         else if (type == "Splay Tree") currentTree = std::make_unique<SplayTree>();
@@ -232,6 +222,7 @@ int run() {
         highlightTimer = 0.f;
     };
 
+    // Create operation buttons for the right panel
     auto createOpButtons = [&]() {
         opButtons.clear();
         float winWidth = window.getSize().x;
@@ -253,6 +244,7 @@ int run() {
             btn.text.setPosition({btnX + btn.shape.getSize().x / 2.f, btnY + btn.shape.getSize().y / 2.f});
             btn.text.setFillColor(sf::Color::Black);
             
+            // Assign actions to buttons
             if (ops[i] == "Insert") {
                 btn.onClick = [&]() { currentScreen = Screen::InputKey; inputKey.clear(); inputValue.clear(); message = "Enter key and value (e.g. 10 5)"; };
             } else if (ops[i] == "Remove") {
@@ -275,21 +267,25 @@ int run() {
     sf::Clock clock;
     bool enteringValue = false;
 
+    // Main event loop
     while (window.isOpen()) {
         float dt = clock.restart().asSeconds();
         
         while (auto event = window.pollEvent())
         {
+            // Handle window close and ESC key
             if (event->is<sf::Event::Closed>() || (event->is<sf::Event::KeyPressed>() && event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape))
             {
                 window.close();
             }
+            // Handle window resize
             else if (auto* resized = event->getIf<sf::Event::Resized>())
             {
                 window.setView(sf::View(sf::FloatRect({0, 0}, {static_cast<float>(resized->size.x), static_cast<float>(resized->size.y)})));
                 createOpButtons();
             }
 
+            // Main menu navigation
             if (currentScreen == Screen::MainMenu) {
                 if (auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                     if (keyPressed->code == sf::Keyboard::Key::Up)
@@ -299,7 +295,9 @@ int run() {
                     if (keyPressed->code == sf::Keyboard::Key::Enter)
                         setupTree(treeTypes[mainMenuSelected]);
                 }
-            } else if (currentScreen == Screen::TreeScreen) {
+            } 
+            // Handle button clicks in tree screen
+            else if (currentScreen == Screen::TreeScreen) {
                 if (auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>()) {
                     if (mousePressed->button == sf::Mouse::Button::Left) {
                         auto mousePos = sf::Vector2f(mousePressed->position);
@@ -311,12 +309,14 @@ int run() {
                         }
                     }
                 }
-            } else if (currentScreen == Screen::InputKey) {
+            } 
+            // Handle text input for insert/remove/search
+            else if (currentScreen == Screen::InputKey) {
                 bool isInsert = message.find("value") != std::string::npos;
                 if (auto* textEntered = event->getIf<sf::Event::TextEntered>()) {
                     char ch = static_cast<char>(textEntered->unicode);
 
-                    if (ch == '\b') {
+                    if (ch == '\b') { // Backspace
                         if (enteringValue && !inputValue.empty()) inputValue.pop_back();
                         else if (!enteringValue && !inputKey.empty()) inputKey.pop_back();
                         else if (enteringValue && inputValue.empty()) enteringValue = false;
@@ -325,7 +325,7 @@ int run() {
                     } else if (std::isdigit(ch) || (ch == '-' && (enteringValue ? inputValue.empty() : inputKey.empty()))) {
                         if (enteringValue) inputValue += ch;
                         else inputKey += ch;
-                    } else if (ch == '\r' || ch == '\n') {
+                    } else if (ch == '\r' || ch == '\n') { // Enter key
                         if (!inputKey.empty()) {
                             int key = std::stoi(inputKey);
                             if (isInsert) {
@@ -359,7 +359,7 @@ int run() {
                     }
                 }
             }
-        } // Конец цикла событий
+        } // End of event loop
 
         float winWidth = window.getSize().x;
         float winHeight = window.getSize().y;
@@ -367,6 +367,7 @@ int run() {
         
         window.clear(sf::Color(56, 47, 71));
 
+        // Draw main menu
         if (currentScreen == Screen::MainMenu) {
             sf::Text title(font, "Tree Visualizer", 60);
             sf::FloatRect titleBounds = title.getLocalBounds();
@@ -383,7 +384,9 @@ int run() {
                 text.setFillColor(i == mainMenuSelected ? sf::Color(167, 215, 182) : sf::Color(215, 166, 200));
                 window.draw(text);
             }
-        } else if (currentScreen == Screen::TreeScreen || currentScreen == Screen::InputKey) {
+        } 
+        // Draw tree screen and input overlay
+        else if (currentScreen == Screen::TreeScreen || currentScreen == Screen::InputKey) {
             sf::RectangleShape leftBg({leftWidth, winHeight});
             leftBg.setFillColor(sf::Color(183, 173, 200));
             window.draw(leftBg);
@@ -399,6 +402,7 @@ int run() {
             }
 
             float areaX = 0.f, areaY = 0.f, areaWidth = leftWidth, padding = 40.f;
+            // Draw the selected tree type
             if (selectedTreeType == "AVL Tree") {
                 auto* avl = dynamic_cast<AVLTree*>(currentTree.get());
                 if (avl) drawTreeCompact(avl->getRoot(), window, font, highlightKey, highlightTimer, areaX, areaY, areaWidth, winHeight, padding);
@@ -414,6 +418,7 @@ int run() {
             }
         }
 
+        // Draw input overlay for key/value entry
         if (currentScreen == Screen::InputKey) {
             sf::RectangleShape overlay({winWidth, winHeight});
             overlay.setFillColor(sf::Color(188, 187, 190));
@@ -440,6 +445,7 @@ int run() {
             window.draw(inputText);
         }
 
+        // Draw notification message
         if (messageTimer > 0.f && currentScreen != Screen::InputKey) {
             sf::Text notifText(font, message, 24);
             sf::FloatRect textBounds = notifText.getLocalBounds();
@@ -457,6 +463,7 @@ int run() {
             messageTimer -= dt;
         }
 
+        // Decrease highlight timer
         if (highlightTimer > 0.f) {
             highlightTimer -= dt;
             if (highlightTimer <= 0.f) highlightKey = -1;
@@ -467,7 +474,7 @@ int run() {
     return 0;
 }
 
-
+// Program entry point
 int main() {
     return run();
 }
